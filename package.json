@@ -1,0 +1,22 @@
+{
+  "name": "webtech",
+  "version": "1.0.0",
+  "description": "This is a project for the course of web technology.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zl18281/WebTech.git"
+  },
+  "author": "Nuo Chen, Fan Cheng.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zl18281/WebTech/issues"
+  },
+  "homepage": "https://github.com/zl18281/WebTech#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
