@@ -377,7 +377,7 @@ a:active {
 
 section#services {
     background: #E6E6E6;
-    padding: 100px 0;
+    padding: 0;
 }
 
 .btn-primary {
@@ -502,12 +502,13 @@ section#services {
 }
 
 .section-header h2 {
-	font-weight: 700;
+	font-weight: 0;
 	font-size: 48px;
 	color: #80cc0c;
 	border-top: none;
 	border-bottom: none;
-	padding: 8px 10px;
+  font-family: 'Arial', sans-serif;
+	padding: 0px 0px;
 }
 
 .section-header h1 span {
@@ -1860,8 +1861,8 @@ header.page-header .main-menu.minified {
 }
 
 footer {
-	background-color: #111111;
-	padding: 20px 15px;
+	background-color: white;
+	padding: 0px 0px;
 	overflow: hidden;
 }
 
@@ -1876,8 +1877,8 @@ footer .footer-logo {
 
 footer p {
 	color: #828282;
-	margin-bottom: 15px;
-	font-size: 13px;
+	margin-bottom: 0px;
+	font-size: 7px;
 }
 
 footer ul {
@@ -1908,8 +1909,8 @@ footer ul li a i {
 }
 
 .footer-container {
-	background-color: #111111;
-	padding: 60px 30px;
+	background-color: white;
+	padding: 0px 0px;
 }
 
 .footer-containertent {
