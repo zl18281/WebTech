@@ -28,6 +28,17 @@ DB.SqliteDB.prototype.createTable = function(sql){
     });
 };
 
+DB.SqliteDB.prototype.dropTable = function(sql){
+    DB.db.serialize(function(){
+        DB.db.run(sql, function(err){
+            if(null != err){
+                DB.printErrorInfo(err);
+                return;
+            }
+        });
+    });
+};
+
 /// tilesData format; [[level, column, row, content], [level, column, row, content]]
 DB.SqliteDB.prototype.insertData = function(sql, objects){
     DB.db.serialize(function(){
@@ -53,6 +64,7 @@ DB.SqliteDB.prototype.queryData = function(sql, callback){
         }
     });
 };
+
 
 DB.SqliteDB.prototype.executeSql = function(sql){
     DB.db.run(sql, function(err){
