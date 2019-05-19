@@ -59,11 +59,11 @@
 .sp-top-thumbnails {
 	position: absolute;
 	top: 0;
-	margin-bottom: 4px;
+	margin-bottom: 0;
 }
 
 .sp-bottom-thumbnails {
-	margin-top: 4px;
+	margin-top: 0;
 }
 
 .sp-left-thumbnails,
@@ -74,12 +74,12 @@
 
 .sp-right-thumbnails {
 	right: 0;
-	margin-left: 4px;
+	margin-left: 0;
 }
 
 .sp-left-thumbnails {
 	left: 0;
-	margin-right: 4px;
+	margin-right: 0;
 }
 
 .sp-thumbnails {
@@ -117,7 +117,7 @@
 	margin-right: 0;
 }
 
-/* Vertical thumbnails 
+/* Vertical thumbnails
 ----------------------*/
 .sp-left-thumbnails .sp-thumbnail-container,
 .sp-right-thumbnails .sp-thumbnail-container {
