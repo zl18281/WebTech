@@ -1,4 +1,3 @@
-"use strict";
 
 const express = require('express');
 const fs = require('fs');
@@ -13,12 +12,6 @@ var userLoggedIn = null;
 var app = express();
 
 app.use(express.static(__dirname + '/site'));
-
-app.get('/', (req, res) => {
-
-});
-
-
 
 //database
 var file = "wine.db";
@@ -58,7 +51,6 @@ app.get('/user', (req, res) => {
     var username = req.query.log_user;
     var findUserSql = "SELECT * FROM customer WHERE username = \'" + username + "\';";
     sqliteDB.queryData(findUserSql, (rows) => {
-        console.log(rows[0]);
         if(rows[0] == undefined) {
             res.send('User does not exist !<a href="../">Back to Home Page<a/>')
         }
@@ -71,14 +63,17 @@ app.get('/user', (req, res) => {
     });
 });
 
+app.get('/userLoggedIn', (req, res) => {
+    res.send({"username": userLoggedIn});
 
+});
 
 //User register
 app.get('/newuser', (req, res) => {
    var username = req.query.user;
    var email = req.query.email;
    var password = req.query.pass;
-   var userData = [[username, email, password]]
+   var userData = [[username, email, password]];
    var insertUserSql = "INSERT INTO customer(username, password, email) VALUES(?, ?, ?);";
    sqliteDB.insertData(insertUserSql, userData);
    res.render('register.hbs', {
@@ -88,12 +83,43 @@ app.get('/newuser', (req, res) => {
    });
 });
 
+
+
+//category pages
 app.get('/:category', (req, res) => {
-    if(req.params.category == wine) {
+    if(req.params.category == "wine") {
         res.render('category.hbs', {
            category: 'Wine'
         });
+    }else if(req.params.category == "sprits") {
+        res.render('category.hbs', {
+            category: 'sprites'
+        });
+    }else if(req.params.category == "beer") {
+        res.render('category.hbs', {
+            category: 'beer'
+        });
+    }else if(req.params.category == "other") {
+        res.render('category.hbs', {
+            category: 'other'
+        });
+    }else if(req.params.category == "recipes") {
+        res.render('category.hbs', {
+            category: 'recipes'
+        });
+    }else if(req.params.category == "bars") {
+        res.render('category.hbs', {
+            category: 'bars'
+        });
+    }else if(req.params.category == "deals") {
+        res.render('category.hbs', {
+            category: 'deals'
+        });
+    }else if(req.params.category == "sprits") {
+        res.render('category.hbs', {
+            category: 'sprites'
+        });
     }
-})
+});
 
-app.listen(8080);
+app.listen(3000);
