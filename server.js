@@ -1,4 +1,3 @@
-
 const express = require('express');
 const fs = require('fs');
 const SqliteDB = require('./sqlite.js').SqliteDB;
@@ -27,9 +26,6 @@ sqliteDB.dropTable(dropWineTableSql);
 //最后要删掉
 var dropUserTableSql = "DROP TABLE IF EXISTS customer;";
 sqliteDB.dropTable(dropUserTableSql);
-
-
-
 
 
 //database set up
@@ -68,30 +64,27 @@ sqliteDB.createTable(createWineTableSql);
 
 //some initial data for user table(最后要删掉)
 var userData = [[1, 'pq18281', '123', 'zl18281@bristol.ac.uk'],
-                [2, 'fg123', '456', 'abc@163.com']];
+    [2, 'fg123', '456', 'abc@163.com']];
 var insertUserSql = "INSERT INTO customer(id, username, password, email) VALUES(?, ?, ?, ?);";
 sqliteDB.insertData(insertUserSql, userData);
 
 //some initial data for category table(最后要删掉)
 var categoryData = [[1, 'wine'],
-                    [2, 'sprites'],
-                    [3, 'beer']];
+    [2, 'sprites'],
+    [3, 'beer']];
 var insertCategorySql = "INSERT INTO category(id, name) VALUES(?, ?);";
 sqliteDB.insertData(insertCategorySql, categoryData);
 
 //some initial data for wine table(最后要删)
 var wineData = [[1, '葡萄酒', '来自西域的葡萄酒', 1],
-                [2, '米酒', '外婆酿的米酒', 1],
-                [3, '干红', '没有糖的红酒', 2],
-                [4, '威士忌', '来自维也纳的威士忌', 2],
-                [5, '雪花啤酒', '来自中国青岛的雪花啤酒', 3],
-                [6, '格瓦斯', '来自俄罗斯的格瓦斯', 3]];
+    [2, '米酒', '外婆酿的米酒', 1],
+    [3, '干红', '没有糖的红酒', 2],
+    [4, '威士忌', '来自维也纳的威士忌', 2],
+    [5, '雪花啤酒', '来自中国青岛的雪花啤酒', 3],
+    [6, '格瓦斯', '来自俄罗斯的格瓦斯', 3],
+    [7, '百威', '来自美国的百威', 3]];
 var insertWineSql = "INSERT INTO wine(id, name, intro, category) VALUES(?, ?, ?, ?);";
 sqliteDB.insertData(insertWineSql, wineData);
-
-
-
-
 
 
 //user login
@@ -99,10 +92,9 @@ app.get('/user', (req, res) => {
     var username = req.query.log_user;
     var findUserSql = "SELECT * FROM customer WHERE username = \'" + username + "\';";
     sqliteDB.queryData(findUserSql, (rows) => {
-        if(rows[0] == undefined) {
+        if (rows[0] == undefined) {
             res.send('User does not exist !<a href="../">Back to Home Page<a/>')
-        }
-        else {
+        } else {
             userLoggedIn = rows[0].username;
             res.render('user.hbs', {
                 user: rows[0].username
@@ -118,33 +110,40 @@ app.get('/userLoggedIn', (req, res) => {
 
 //User register
 app.get('/newuser', (req, res) => {
-   var username = req.query.user;
-   var email = req.query.email;
-   var password = req.query.pass;
-   var userData = [[username, email, password]];
-   var insertUserSql = "INSERT INTO customer(username, password, email) VALUES(?, ?, ?);";
-   sqliteDB.insertData(insertUserSql, userData);
-   res.render('register.hbs', {
-       username: req.query.user,
-       password: req.query.pass,
-       email: req.query.email
-   });
+    var username = req.query.user;
+    var queryUser = "SELECT username FROM customer WHERE username = \'" + username + "\';";
+    sqliteDB.queryData(queryUser, (rows) => {
+        if (rows[0] == undefined) {
+            var email = req.query.email;
+            var password = req.query.pass;
+            var userData = [[username, email, password]];
+            var insertUserSql = "INSERT INTO customer(username, password, email) VALUES(?, ?, ?);";
+            sqliteDB.insertData(insertUserSql, userData);
+            res.render('register.hbs', {
+                username: req.query.user,
+                password: req.query.pass,
+                email: req.query.email
+            });
+
+        } else {
+            res.send('Username exists, registration failed !<a href="../">Back to Home Page<a/>');
+        }
+    });
+
 });
-
-
 
 
 //category pages
 app.get('/:category', (req, res) => {
-    if(req.params.category == "wine") {
+    if (req.params.category == "wine") {
         res.render('category.hbs', {
-           category: 'Wine',
+            category: 'Wine',
             one: 'wine one',
             two: 'wine two',
             urlOne: "/wine/one",
-            urlTwo: "/wine/two"
+            urlTwo: "/wine/two",
         });
-    }else if(req.params.category == "sprites") {
+    } else if (req.params.category == "sprites") {
         res.render('category.hbs', {
             category: 'sprites',
             one: 'sprite one',
@@ -152,15 +151,17 @@ app.get('/:category', (req, res) => {
             urlOne: "/sprites/one",
             urlTwo: "/sprites/two"
         });
-    }else if(req.params.category == "beer") {
+    } else if (req.params.category == "beer") {
         res.render('category.hbs', {
             category: 'beer',
             one: 'beer one',
             two: 'beer two',
+            three: 'beer three',
             urlOne: "/beer/one",
-            urlTwo: "/beer/two"
+            urlTwo: "/beer/two",
+            urlThree: "/beer/three"
         });
-    }else if(req.params.category == "other") {
+    } else if (req.params.category == "other") {
         res.render('category.hbs', {
             category: 'other',
             one: 'Coke',
@@ -168,7 +169,7 @@ app.get('/:category', (req, res) => {
             urlOne: "/other/one",
             urlTwo: "/other/two"
         });
-    }else if(req.params.category == "recipes") {
+    } else if (req.params.category == "recipes") {
         res.render('category.hbs', {
             category: 'recipes',
             one: 'Fermentation',
@@ -176,7 +177,7 @@ app.get('/:category', (req, res) => {
             urlOne: "/recipes/one",
             urlTwo: "/recipes/two"
         });
-    }else if(req.params.category == "bars") {
+    } else if (req.params.category == "bars") {
         res.render('category.hbs', {
             category: 'bars',
             one: 'bar one',
@@ -184,7 +185,7 @@ app.get('/:category', (req, res) => {
             urlOne: "/bars/one",
             urlTwo: "/bars/two"
         });
-    }else if(req.params.category == "deals") {
+    } else if (req.params.category == "deals") {
         res.render('category.hbs', {
             category: 'deals',
             one: 'deal one',
@@ -196,9 +197,6 @@ app.get('/:category', (req, res) => {
 });
 
 
-
-
-
 //Individual wine pages
 app.get('/:wine/:individual', (req, res) => {
     console.log(req);
@@ -208,7 +206,7 @@ app.get('/:wine/:individual', (req, res) => {
     var findWineSql;
     var index;
 
-    switch(category){
+    switch (category) {
         case 'wine': {
             findWineSql = "SELECT * FROM wine WHERE category = 1;";
             break;
@@ -222,29 +220,34 @@ app.get('/:wine/:individual', (req, res) => {
             break;
         }
     }
-    switch(wine){
-        case 'one':{
+    switch (wine) {
+        case 'one': {
             index = 1;
             break;
         }
-        case 'two':{
+        case 'two': {
             index = 2;
             break;
         }
+        case 'three': {
+            index = 3;
+            break;
+        }
     }
-    sqliteDB.queryData(findWineSql, (rows) => {
-        if(rows[index-1] == undefined) {
-            res.send('Wine does not exist !<a href="../">Back to Home Page<a/>');
-        }
-        else {
-            res.render('individual.hbs', {
-                individual: rows[index-1].name,
-                introduction: rows[index-1].intro,
-                category: req.params['wine'],
-                parent_page: "/" + req.params['wine']
-            });
-        }
-    });
+    if (category == "wine" || category == "sprites" || category == "beer") {
+        sqliteDB.queryData(findWineSql, (rows) => {
+            if (rows[index - 1] == undefined) {
+                res.send('Wine does not exist !<a href="../">Back to Home Page<a/>');
+            } else {
+                res.render('individual.hbs', {
+                    individual: rows[index - 1].name,
+                    introduction: rows[index - 1].intro,
+                    category: req.params['wine'],
+                    parent_page: "/" + req.params['wine']
+                });
+            }
+        });
+    }
 });
 
 app.listen(3000);
