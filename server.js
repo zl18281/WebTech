@@ -18,12 +18,21 @@ var file = "wine.db";
 var sqliteDB = new SqliteDB(file);
 
 
-
+//最后要删掉
+var dropCategoryTableSql = "DROP TABLE IF EXISTS category;";
+sqliteDB.dropTable(dropCategoryTableSql);
+//最后要删掉
+var dropWineTableSql = "DROP TABLE IF EXISTS wine;";
+sqliteDB.dropTable(dropWineTableSql);
 //最后要删掉
 var dropUserTableSql = "DROP TABLE IF EXISTS customer;";
 sqliteDB.dropTable(dropUserTableSql);
 
 
+
+
+
+//database set up
 
 //schema of user table
 var createUserTableSql = "CREATE TABLE IF NOT EXISTS " +
@@ -36,13 +45,52 @@ var createUserTableSql = "CREATE TABLE IF NOT EXISTS " +
     ");";
 sqliteDB.createTable(createUserTableSql);
 
+//schema of category table
+var createCategoryTableSql = "CREATE TABLE IF NOT EXISTS " +
+    "category(" +
+    "id INTEGER AUTO INCREMENT, " +
+    "name VARCHAR(50) UNIQUE NOT NULL, " +
+    "PRIMARY KEY(id)" +
+    ");";
+sqliteDB.createTable(createCategoryTableSql);
 
+//schema of wine table
+var createWineTableSql = "CREATE TABLE IF NOT EXISTS " +
+    "wine(" +
+    "id INTEGER AUTO INCREMENT, " +
+    "name VARCHAR(50) UNIQUE NOT NULL, " +
+    "intro TEXT, " +
+    "category INTEGER, " +
+    "PRIMARY KEY(id), " +
+    "FOREIGN KEY(category) REFERENCES category(id) " +
+    ");";
+sqliteDB.createTable(createWineTableSql);
 
 //some initial data for user table(最后要删掉)
 var userData = [[1, 'pq18281', '123', 'zl18281@bristol.ac.uk'],
                 [2, 'fg123', '456', 'abc@163.com']];
 var insertUserSql = "INSERT INTO customer(id, username, password, email) VALUES(?, ?, ?, ?);";
 sqliteDB.insertData(insertUserSql, userData);
+
+//some initial data for category table(最后要删掉)
+var categoryData = [[1, 'wine'],
+                    [2, 'sprites'],
+                    [3, 'beer']];
+var insertCategorySql = "INSERT INTO category(id, name) VALUES(?, ?);";
+sqliteDB.insertData(insertCategorySql, categoryData);
+
+//some initial data for wine table(最后要删)
+var wineData = [[1, '葡萄酒', '来自西域的葡萄酒', 1],
+                [2, '米酒', '外婆酿的米酒', 1],
+                [3, '干红', '没有糖的红酒', 2],
+                [4, '威士忌', '来自维也纳的威士忌', 2],
+                [5, '雪花啤酒', '来自中国青岛的雪花啤酒', 3],
+                [6, '格瓦斯', '来自俄罗斯的格瓦斯', 3]];
+var insertWineSql = "INSERT INTO wine(id, name, intro, category) VALUES(?, ?, ?, ?);";
+sqliteDB.insertData(insertWineSql, wineData);
+
+
+
 
 
 
@@ -85,41 +133,118 @@ app.get('/newuser', (req, res) => {
 
 
 
+
 //category pages
 app.get('/:category', (req, res) => {
     if(req.params.category == "wine") {
         res.render('category.hbs', {
-           category: 'Wine'
+           category: 'Wine',
+            one: 'wine one',
+            two: 'wine two',
+            urlOne: "/wine/one",
+            urlTwo: "/wine/two"
         });
-    }else if(req.params.category == "sprits") {
+    }else if(req.params.category == "sprites") {
         res.render('category.hbs', {
-            category: 'sprites'
+            category: 'sprites',
+            one: 'sprite one',
+            two: 'sprite two',
+            urlOne: "/sprites/one",
+            urlTwo: "/sprites/two"
         });
     }else if(req.params.category == "beer") {
         res.render('category.hbs', {
-            category: 'beer'
+            category: 'beer',
+            one: 'beer one',
+            two: 'beer two',
+            urlOne: "/beer/one",
+            urlTwo: "/beer/two"
         });
     }else if(req.params.category == "other") {
         res.render('category.hbs', {
-            category: 'other'
+            category: 'other',
+            one: 'Coke',
+            two: 'Juice',
+            urlOne: "/other/one",
+            urlTwo: "/other/two"
         });
     }else if(req.params.category == "recipes") {
         res.render('category.hbs', {
-            category: 'recipes'
+            category: 'recipes',
+            one: 'Fermentation',
+            two: 'Mixing',
+            urlOne: "/recipes/one",
+            urlTwo: "/recipes/two"
         });
     }else if(req.params.category == "bars") {
         res.render('category.hbs', {
-            category: 'bars'
+            category: 'bars',
+            one: 'bar one',
+            two: 'bar two',
+            urlOne: "/bars/one",
+            urlTwo: "/bars/two"
         });
     }else if(req.params.category == "deals") {
         res.render('category.hbs', {
-            category: 'deals'
-        });
-    }else if(req.params.category == "sprits") {
-        res.render('category.hbs', {
-            category: 'sprites'
+            category: 'deals',
+            one: 'deal one',
+            two: 'deal two',
+            urlOne: "/deals/one",
+            urlTwo: "/deals/two"
         });
     }
+});
+
+
+
+
+
+//Individual wine pages
+app.get('/:wine/:individual', (req, res) => {
+    console.log(req);
+    var category = req.params["wine"];
+    var wine = req.params["individual"];
+    console.log(wine);
+    var findWineSql;
+    var index;
+
+    switch(category){
+        case 'wine': {
+            findWineSql = "SELECT * FROM wine WHERE category = 1;";
+            break;
+        }
+        case 'sprites': {
+            findWineSql = "SELECT * FROM wine WHERE category = 2;";
+            break;
+        }
+        case 'beer': {
+            findWineSql = "SELECT * FROM wine WHERE category = 3;";
+            break;
+        }
+    }
+    switch(wine){
+        case 'one':{
+            index = 1;
+            break;
+        }
+        case 'two':{
+            index = 2;
+            break;
+        }
+    }
+    sqliteDB.queryData(findWineSql, (rows) => {
+        if(rows[index-1] == undefined) {
+            res.send('Wine does not exist !<a href="../">Back to Home Page<a/>');
+        }
+        else {
+            res.render('individual.hbs', {
+                individual: rows[index-1].name,
+                introduction: rows[index-1].intro,
+                category: req.params['wine'],
+                parent_page: "/" + req.params['wine']
+            });
+        }
+    });
 });
 
 app.listen(3000);
