@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <style type="text/css">
+        th {
+           text-align: center;
+        }
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>Order For user {{username}}</h1>
+<p id="1">{{order}}</p>
+<table id="2" width="400" cellpadding="10" cellspacing="5"></table>
+<a href="/">Back to main page</a>
+</body>
+<script>
+    var string = document.getElementById("1").innerText;
+    var arrayOfStrings = string.split(",");
+    for (var i = 0; i < arrayOfStrings.length; i = i + 2) {
+        if (i == 0 || i == 1) {
+            var tr = document.createElement("tr");
+            var thOne = document.createElement("th");
+            var thTwo = document.createElement("th");
+            thOne.innerHTML = arrayOfStrings[i];
+            thTwo.innerHTML = arrayOfStrings[i + 1];
+            tr.appendChild(thOne);
+            tr.appendChild(thTwo);
+            document.getElementById("2").appendChild(tr);
+        } else {
+            var tr = document.createElement("tr");
+            var tdOne = document.createElement("td");
+            var tdTwo = document.createElement("td");
+            tdOne.innerHTML = arrayOfStrings[i];
+            tdTwo.innerHTML = arrayOfStrings[i + 1];
+            tr.appendChild(tdOne);
+            tr.appendChild(tdTwo);
+            document.getElementById("2").appendChild(tr);
+        }
+    }
+</script>
+</html>

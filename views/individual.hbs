@@ -2,17 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{individual}}</title>
+    <title>{{category}}, {{individual}}</title>
 </head>
 <body>
 <h1>{{individual}}</h1>
 <div>
     <p>{{introduction}}</p>
 </div>
-<div>
-    <a href="/cart">Add to cart</a>
+<div id="1">
+    <form action='/{{category}}/{{individual}}/cart' method='get'>
+        <input type="number" name="num" required>
+        <input type="submit" name="placeOrder" value="Place Order" required>
+    </form>
 </div>
 <a href={{parent_page}}>Back to {{category}} page</a><br/>
 <a href="../">Back to main page</a>
 </body>
+<script>
+    var cnt = 0;
+
+    function generateOrder() {
+        if (cnt == 0) {
+            var p = document.createElement("p");
+            p.innerHTML = "Successfully added to cart X" + (cnt + 1);
+            document.getElementById("1").appendChild(p);
+            cnt++;
+        } else {
+            document.getElementById("1").children[1].innerHTML =
+                    "Successfully added to cart X" + (cnt + 1);
+            cnt++;
+        }
+    }
+</script>
 </html>
