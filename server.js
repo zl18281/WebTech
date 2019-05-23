@@ -259,6 +259,8 @@ app.get('/:category/:individual', (req, res) => {
             break;
         }
     }
+    //need modify if adding new individual wine.
+    //Keep number of branches of switch up with largest number.
     switch (wine) {
         case 'one': {
             number = "one";
