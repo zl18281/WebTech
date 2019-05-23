@@ -102,9 +102,9 @@ var wineData = [[1, 'Red Wine', 'From Australia', 1, '/images/wine/1'],
     [2, 'Grain Wine', 'Fermented from pure corn', 1, '/images/wine/2'],
     [3, 'Red Sprite', 'With no sugar', 2, '/images/spirit/1'],
     [4, 'Blue Sprite', 'With sugar', 2, '/images/spirit/2'],
-    [5, 'Black beer', 'From America', 3, 'images/beer/1'],
-    [6, 'Light beer', 'With less sugar', 3, 'image/beer/2'],
-    [7, 'Strong beer', 'With strong spicy flavor', 3, 'images/beer/3']];
+    [5, 'Black beer', 'From America', 3, '/images/beer/1'],
+    [6, 'Light beer', 'With less sugar', 3, '/image/beer/2'],
+    [7, 'Strong beer', 'With strong spicy flavor', 3, '/images/beer/3']];
 var insertWineSql = "INSERT INTO wine(id, name, intro, category, src) VALUES(?, ?, ?, ?, ?);";
 sqliteDB.insertData(insertWineSql, wineData);
 
@@ -117,6 +117,9 @@ app.get('/user', (req, res) => {
         if (rows[0] == undefined) {
             res.send('User does not exist !<a href="../">Back to Home Page<a/>')
         } else {
+            console.log(userLoggedIn);
+            console.log(req.query.log_pass);
+            console.log(rows[0].password);
             if(req.query.log_pass == rows[0].password) {
                 userLoggedIn = rows[0].username;
                 userId = rows[0].id;
@@ -148,7 +151,7 @@ app.get('/newuser', (req, res) => {
             var email = req.query.email;
             var password = req.query.pass;
             var userData = [[username, email, password]];
-            var insertUserSql = "INSERT INTO customer(username, password, email) VALUES(?, ?, ?);";
+            var insertUserSql = "INSERT INTO customer(username, email, password) VALUES(?, ?, ?);";
             sqliteDB.insertData(insertUserSql, userData);
             res.render('register.hbs', {
                 username: req.query.user,
