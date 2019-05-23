@@ -97,7 +97,7 @@ var insertCategorySql = "INSERT INTO category(id, name) VALUES(?, ?);";
 sqliteDB.insertData(insertCategorySql, categoryData);
 
 //some initial data for wine table(最后要删)
-var wineData = [[1, 'Red', 'From Australia', 1],
+var wineData = [[1, 'Red Wine', 'From Australia', 1],
     [2, 'Grain Wine', 'Fermented from pure corn', 1],
     [3, 'Red Sprite', 'With no sugar', 2],
     [4, 'Blue Sprite', 'With sugar', 2],
@@ -116,11 +116,19 @@ app.get('/user', (req, res) => {
         if (rows[0] == undefined) {
             res.send('User does not exist !<a href="../">Back to Home Page<a/>')
         } else {
-            userLoggedIn = rows[0].username;
-            userId = rows[0].id;
-            res.render('user.hbs', {
-                user: rows[0].username
-            });
+            if(req.query.log_pass == rows[0].password) {
+                userLoggedIn = rows[0].username;
+                userId = rows[0].id;
+                res.render('user.hbs', {
+                    user: rows[0].username
+                });
+            }else {
+                userLoggedIn = null;
+                res.render('user.hbs', {
+                    user: "nobody. Password incorrect !"
+                });
+            }
+
         }
     });
 });
@@ -160,8 +168,8 @@ app.get('/:category', (req, res) => {
         category = "wine";
         res.render('category.hbs', {
             category: 'Wine',
-            one: 'wine one',
-            two: 'wine two',
+            one: 'Red Wine',
+            two: 'Grain Wine',
             urlOne: "/wine/one",
             urlTwo: "/wine/two",
         });
@@ -169,8 +177,8 @@ app.get('/:category', (req, res) => {
         category = "sprites";
         res.render('category.hbs', {
             category: 'sprites',
-            one: 'sprite one',
-            two: 'sprite two',
+            one: 'Red Sprite',
+            two: 'Blue Sprite',
             urlOne: "/sprites/one",
             urlTwo: "/sprites/two"
         });
@@ -178,8 +186,8 @@ app.get('/:category', (req, res) => {
         category = "beer";
         res.render('category.hbs', {
             category: 'beer',
-            one: 'beer one',
-            two: 'beer two',
+            one: 'Black beer',
+            two: 'Light beer',
             three: 'beer three',
             urlOne: "/beer/one",
             urlTwo: "/beer/two",
@@ -282,30 +290,39 @@ app.get('/:category/:individual', (req, res) => {
 
 //place order
 app.get('/:category/:individual/cart', (req, res) => {
-    console.log(req);
-    var queryCustomer = "SELECT id FROM customer WHERE username = \'" + userLoggedIn + "\';";
-    console.log(userLoggedIn);
-    var customerId = null;
-    sqliteDB.queryData(queryCustomer, (rows) => {
-        customerId = rows[0].id;
-        console.log(customerId);
-        var queryWine = "SELECT id FROM wine WHERE name = \'" + req.params["individual"] + "\';";
-        var wineId = null;
-        sqliteDB.queryData(queryWine, (rows) => {
-            wineId = rows[0].id;
-            console.log(wineId);
-            var insertOrderData = [[customerId, wineId]];
-            var insertOrderSql = "INSERT INTO orderList(customer, wine) VALUES(?, ?);";
-            for (var i = 0; i < req.query.num; i++) {
-                sqliteDB.insertData(insertOrderSql, insertOrderData);
-                console.log("***");
-            }
+    if(userLoggedIn == null) {
+        res.render('successfulPlaceOrder.hbs', {
+            parent_page: "/" + req.params["category"],
+            category: req.params["category"],
+            message: "You are not logged in"
         });
-    });
-    res.render('successfulPlaceOrder.hbs', {
-        parent_page: "/" + req.params["category"],
-        category: req.params["category"]
-    });
+    }else{
+        console.log(req);
+        var queryCustomer = "SELECT id FROM customer WHERE username = \'" + userLoggedIn + "\';";
+        console.log(userLoggedIn);
+        var customerId = null;
+        sqliteDB.queryData(queryCustomer, (rows) => {
+            customerId = rows[0].id;
+            console.log(customerId);
+            var queryWine = "SELECT id FROM wine WHERE name = \'" + req.params["individual"] + "\';";
+            var wineId = null;
+            sqliteDB.queryData(queryWine, (rows) => {
+                wineId = rows[0].id;
+                console.log(wineId);
+                var insertOrderData = [[customerId, wineId]];
+                var insertOrderSql = "INSERT INTO orderList(customer, wine) VALUES(?, ?);";
+                for (var i = 0; i < req.query.num; i++) {
+                    sqliteDB.insertData(insertOrderSql, insertOrderData);
+                    console.log("***");
+                }
+            });
+        });
+        res.render('successfulPlaceOrder.hbs', {
+            parent_page: "/" + req.params["category"],
+            category: req.params["category"],
+            message: "Your order has been recorded"
+        });
+    }
 });
 
 

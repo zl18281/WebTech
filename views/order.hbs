@@ -4,12 +4,32 @@
     <meta charset="UTF-8">
     <title>Order</title>
     <style type="text/css">
+        th, tr {
+            border-top-width: 1px;
+            border-top-style: solid;
+            border-top-color: rgb(230, 189, 189);
+        }
+        table {
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-bottom-color: rgb(230, 189, 189);
+        }
+        td, th {
+            padding: 5px 10px;
+            font-size: 20px;
+            font-family: Verdana;
+            color: rgb(177, 106, 104);
+        }
+        table tr:nth-child(even) {
+            background: rgb(238, 211, 210)
+        }
+        table tr:nth-child(odd) {
+            background: #FFF
+        }
         th {
-           text-align: center;
+
         }
-        td {
-            text-align: center;
-        }
+
     </style>
 </head>
 <body>
@@ -42,5 +62,6 @@
             document.getElementById("2").appendChild(tr);
         }
     }
+    document.getElementById("1").remove();
 </script>
 </html>
