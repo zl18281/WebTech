@@ -41,60 +41,58 @@ sqliteDB.dropTable(dropUserTableSql);
 //schema of user table
 var createUserTableSql = "CREATE TABLE IF NOT EXISTS " +
     "customer(" +
-    "id INTEGER AUTO INCREMENT, " +
+    "ids INTEGER PRIMARY KEY AUTOINCREMENT, " +
     "username VARCHAR(50) UNIQUE NOT NULL, " +
     "password VARCHAR(50) NOT NULL, " +
-    "email VARCHAR(50) NOT NULL, " +
-    "PRIMARY KEY(id)" +
+    "email VARCHAR(50) NOT NULL " +
     ");";
 sqliteDB.createTable(createUserTableSql);
 
 //schema of category table
 var createCategoryTableSql = "CREATE TABLE IF NOT EXISTS " +
     "category(" +
-    "id INTEGER AUTO INCREMENT, " +
-    "name VARCHAR(50) UNIQUE NOT NULL, " +
-    "PRIMARY KEY(id)" +
+    "ids INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    "name VARCHAR(50) UNIQUE NOT NULL " +
     ");";
 sqliteDB.createTable(createCategoryTableSql);
 
 //schema of wine table
 var createWineTableSql = "CREATE TABLE IF NOT EXISTS " +
     "wine(" +
-    "id INTEGER AUTO INCREMENT, " +
+    "ids INTEGER PRIMARY KEY AUTOINCREMENT, " +
     "name VARCHAR(50) UNIQUE NOT NULL, " +
     "intro TEXT, " +
     "category INTEGER, " +
     "src VARCHAR(100), " +
-    "PRIMARY KEY(id), " +
-    "FOREIGN KEY(category) REFERENCES category(id) " +
+    "FOREIGN KEY(category) REFERENCES category(ids)" +
     ");";
 sqliteDB.createTable(createWineTableSql);
 
 //schema of join table between wine and customer
 var createOrderTableSql = "CREATE TABLE IF NOT EXISTS " +
     "orderList(" +
-    "id INTEGER AUTO INCREMENT, " +
+    "ids INTEGER PRIMARY KEY AUTOINCREMENT, " +
     "customer INTEGER NOT NULL, " +
     "wine INTEGER NOT NULL, " +
-    "PRIMARY KEY(id), " +
-    "FOREIGN KEY(customer) REFERENCES customer(id), " +
-    "FOREIGN KEY(wine) REFERENCES wine(id)" +
+    "FOREIGN KEY(customer) REFERENCES customer(ids), " +
+    "FOREIGN KEY(wine) REFERENCES wine(ids)" +
     ");";
 sqliteDB.createTable(createOrderTableSql);
 
-
+/*
 //some initial data for user table(最后要删掉)
 var userData = [[1, 'pq18281', '123', 'zl18281@bristol.ac.uk'],
     [2, 'fg123', '456', 'abc@163.com']];
-var insertUserSql = "INSERT INTO customer(id, username, password, email) VALUES(?, ?, ?, ?);";
+var insertUserSql = "INSERT INTO customer(ids, username, password, email) VALUES(?, ?, ?, ?);";
 sqliteDB.insertData(insertUserSql, userData);
+
+*/
 
 //some initial data for category table(最后要删掉)
 var categoryData = [[1, 'wine'],
     [2, 'spirit'],
     [3, 'beer']];
-var insertCategorySql = "INSERT INTO category(id, name) VALUES(?, ?);";
+var insertCategorySql = "INSERT INTO category(ids, name) VALUES(?, ?);";
 sqliteDB.insertData(insertCategorySql, categoryData);
 
 //some initial data for wine table(最后要删)
@@ -105,7 +103,7 @@ var wineData = [[1, 'Red Wine', 'From Australia', 1, '/images/wine/1'],
     [5, 'Black beer', 'From America', 3, '/images/beer/1'],
     [6, 'Light beer', 'With less sugar', 3, '/image/beer/2'],
     [7, 'Strong beer', 'With strong spicy flavor', 3, '/images/beer/3']];
-var insertWineSql = "INSERT INTO wine(id, name, intro, category, src) VALUES(?, ?, ?, ?, ?);";
+var insertWineSql = "INSERT INTO wine(ids, name, intro, category, src) VALUES(?, ?, ?, ?, ?);";
 sqliteDB.insertData(insertWineSql, wineData);
 
 
@@ -122,7 +120,7 @@ app.get('/user', (req, res) => {
             console.log(rows[0].password);
             if(req.query.log_pass == rows[0].password) {
                 userLoggedIn = rows[0].username;
-                userId = rows[0].id;
+                userId = rows[0].ids;
                 res.render('user.hbs', {
                     user: rows[0].username
                 });
@@ -150,8 +148,8 @@ app.get('/newuser', (req, res) => {
         if (rows[0] == undefined) {
             var email = req.query.email;
             var password = req.query.pass;
-            var userData = [[username, email, password]];
-            var insertUserSql = "INSERT INTO customer(username, email, password) VALUES(?, ?, ?);";
+            var userData = [[username, password, email]];
+            var insertUserSql = "INSERT INTO customer(username, password, email) VALUES(?, ?, ?);";
             sqliteDB.insertData(insertUserSql, userData);
             res.render('register.hbs', {
                 username: req.query.user,
@@ -308,17 +306,17 @@ app.get('/:category/:individual/cart', (req, res) => {
             message: "You are not logged in"
         });
     }else{
-        console.log(req);
-        var queryCustomer = "SELECT id FROM customer WHERE username = \'" + userLoggedIn + "\';";
+        var queryCustomer = "SELECT * FROM customer WHERE username = \'" + userLoggedIn + "\';";
         console.log(userLoggedIn);
         var customerId = null;
         sqliteDB.queryData(queryCustomer, (rows) => {
-            customerId = rows[0].id;
+            customerId = rows[0].ids;
+            console.log(rows[0]);
             console.log(customerId);
-            var queryWine = "SELECT id FROM wine WHERE name = \'" + req.params["individual"] + "\';";
+            var queryWine = "SELECT ids FROM wine WHERE name = \'" + req.params["individual"] + "\';";
             var wineId = null;
             sqliteDB.queryData(queryWine, (rows) => {
-                wineId = rows[0].id;
+                wineId = rows[0].ids;
                 console.log(wineId);
                 var insertOrderData = [[customerId, wineId]];
                 var insertOrderSql = "INSERT INTO orderList(customer, wine) VALUES(?, ?);";
@@ -342,7 +340,7 @@ app.get('/user/order/orderForUser', (req, res) => {
     console.log("hahaha");
     console.log(userId);
     var queryOrder =
-        "SELECT w.name as wineName, COUNT(*) AS wineNum FROM orderList as ol INNER JOIN wine as w ON ol.wine = w.id WHERE customer = " +
+        "SELECT w.name as wineName, COUNT(*) AS wineNum FROM orderList as ol INNER JOIN wine as w ON ol.wine = w.ids WHERE customer = " +
         userId + " GROUP BY ol.wine;";
     sqliteDB.queryData(queryOrder, (rows) => {
         var orderList = [["Item", "Number"]];
@@ -364,4 +362,4 @@ app.get('/user/order/orderForUser', (req, res) => {
     });
 });
 
-app.listen(3001);
+app.listen(3000);
