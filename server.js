@@ -92,20 +92,20 @@ sqliteDB.insertData(insertUserSql, userData);
 
 //some initial data for category table(最后要删掉)
 var categoryData = [[1, 'wine'],
-    [2, 'sprites'],
+    [2, 'spirit'],
     [3, 'beer']];
 var insertCategorySql = "INSERT INTO category(id, name) VALUES(?, ?);";
 sqliteDB.insertData(insertCategorySql, categoryData);
 
 //some initial data for wine table(最后要删)
-var wineData = [[1, 'Red Wine', 'From Australia', 1],
-    [2, 'Grain Wine', 'Fermented from pure corn', 1],
-    [3, 'Red Sprite', 'With no sugar', 2],
-    [4, 'Blue Sprite', 'With sugar', 2],
-    [5, 'Black beer', 'From America', 3],
-    [6, 'Light beer', 'With less sugar', 3],
-    [7, 'Strong beer', 'With strong spicy flavor', 3]];
-var insertWineSql = "INSERT INTO wine(id, name, intro, category) VALUES(?, ?, ?, ?);";
+var wineData = [[1, 'Red Wine', 'From Australia', 1, '/images/wine/1'],
+    [2, 'Grain Wine', 'Fermented from pure corn', 1, '/images/wine/2'],
+    [3, 'Red Sprite', 'With no sugar', 2, '/images/spirit/1'],
+    [4, 'Blue Sprite', 'With sugar', 2, '/images/spirit/2'],
+    [5, 'Black beer', 'From America', 3, 'images/beer/1'],
+    [6, 'Light beer', 'With less sugar', 3, 'image/beer/2'],
+    [7, 'Strong beer', 'With strong spicy flavor', 3, 'images/beer/3']];
+var insertWineSql = "INSERT INTO wine(id, name, intro, category, src) VALUES(?, ?, ?, ?, ?);";
 sqliteDB.insertData(insertWineSql, wineData);
 
 
@@ -168,20 +168,20 @@ app.get('/:category', (req, res) => {
     if (req.params.category == "wine") {
         category = "wine";
         res.render('category.hbs', {
-            category: 'Wine',
+            category: 'wine',
             one: 'Red Wine',
             two: 'Grain Wine',
             urlOne: "/wine/one",
             urlTwo: "/wine/two",
         });
-    } else if (req.params.category == "sprites") {
-        category = "sprites";
+    } else if (req.params.category == "spirit") {
+        category = "spirit";
         res.render('category.hbs', {
-            category: 'sprites',
-            one: 'Red Sprite',
-            two: 'Blue Sprite',
-            urlOne: "/sprites/one",
-            urlTwo: "/sprites/two"
+            category: 'spirit',
+            one: 'Red Spirit',
+            two: 'Blue Spirit',
+            urlOne: "/spirit/one",
+            urlTwo: "/spirit/two"
         });
     } else if (req.params.category == "beer") {
         category = "beer";
@@ -240,13 +240,14 @@ app.get('/:category/:individual', (req, res) => {
     var wine = req.params["individual"];
     var findWineSql;
     var index;
+    var imageSrc;
 
     switch (category) {
         case 'wine': {
             findWineSql = "SELECT * FROM wine WHERE category = 1;";
             break;
         }
-        case 'sprites': {
+        case 'spirit': {
             findWineSql = "SELECT * FROM wine WHERE category = 2;";
             break;
         }
@@ -259,20 +260,23 @@ app.get('/:category/:individual', (req, res) => {
         case 'one': {
             number = "one";
             index = 1;
+            imageSrc = "/images/" + category +"/1.png";
             break;
         }
         case 'two': {
             number = "two";
             index = 2;
+            imageSrc = "/images/" + category +"/2.png";
             break;
         }
         case 'three': {
             number = "three";
             index = 3;
+            imageSrc = "/images/" + category +"/3.png";
             break;
         }
     }
-    if (category == "wine" || category == "sprites" || category == "beer") {
+    if (category == "wine" || category == "spirit" || category == "beer") {
         sqliteDB.queryData(findWineSql, (rows) => {
             if (rows[index - 1] == undefined) {
                 res.send('Wine does not exist !<a href="../">Back to Home Page<a/>');
@@ -281,7 +285,8 @@ app.get('/:category/:individual', (req, res) => {
                     individual: rows[index - 1].name,
                     introduction: rows[index - 1].intro,
                     category: req.params['category'],
-                    parent_page: "/" + req.params['category']
+                    parent_page: "/" + req.params['category'],
+                    image: imageSrc
                 });
             }
         });
