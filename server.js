@@ -65,6 +65,7 @@ var createWineTableSql = "CREATE TABLE IF NOT EXISTS " +
     "name VARCHAR(50) UNIQUE NOT NULL, " +
     "intro TEXT, " +
     "category INTEGER, " +
+    "src VARCHAR(100), " +
     "PRIMARY KEY(id), " +
     "FOREIGN KEY(category) REFERENCES category(id) " +
     ");";
