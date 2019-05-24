@@ -1562,7 +1562,7 @@ header.page-header .main-menu.minified {
 
 .menus.style3 .menu .food .food-name,
 .menus.style3 .menu .food .food-price {
-    font-family: 'Open Sans', sans-serif;
+	  font-family: 'Raleway',cursive;
     font-size: 19px;
     font-style: normal;
     line-height: 30px;
@@ -2365,7 +2365,7 @@ footer ul li a i {
 .jumbotron{
 	height:100vh;
 	margin:0;
-	background-image: url("liquor2.jpg");
+	background-image: url("/css/liquor2.jpg");
 	background-size: cover;
 	background-position: center center;
 }

@@ -1,21 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- CSS Section -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/color.css">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/css/magnific-popup.css">
+  <link rel="stylesheet" href="/css/slider-pro.css">
+  <link rel="stylesheet" href="/css/owl.carousel.css">
+  <link rel="stylesheet" href="/css/owl.theme.css">
+  <link rel="stylesheet" href="/css/owl.transitions.css">
+  <link rel="stylesheet" href="/css/animate.css">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="favicons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <script src="js/username.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <style type="text/css">li {
         list-style-type: none;
     }</style>
     <meta charset="UTF-8">
     <title>{{category}}</title>
 </head>
-<body>
-<h1>{{category}}</h1>
-<h2>This the {{category}} page !</h2>
-<p>{{numberOfWines}}</p>
-<ul>
-    <li><a href={{urlOne}}>{{one}}</a></li>
-    <li><a href={{urlTwo}}>{{two}}</a></li>
-    <li><a href={{urlThree}}>{{three}}</a></li>
-</ul>
-<a href="../">Back to main page</a>
+
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" onload="fetchData()">
+
+
+  <!-- Header Start -->
+
+  <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand nav navbar-nav" href="#myPage"></a>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+              <a href="../"><img class="logo" id="logo" src="images/logo.png" alt="logo" width="42" height="42"></a>
+              <ul class="nav navbar-nav navbar-right">
+                  <li><a id=88 href="" data-toggle="" data-target="">NULL</a></li>
+                  <li><a href="/user/order/orderForUser" data-toggle="" data-target="">CART</a></li>
+                  <li><a href="" data-toggle="modal" data-target="#signup-modal">SIGN UP</a></li>
+                  <li><a href="" data-toggle="modal" data-target="#login-modal">LOG IN</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+
+  <div class="jumbotron text-center">
+      <div style="height:20%;">
+          <h1></h1>
+      </div>
+      <div style="height:10%;">
+          <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/wine">WINE</a></button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                    href="/spirit">SPIRIT</a>
+                  </button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/beer">BEER</a></button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/other">OTHER</a></button>
+              </div>
+          </div>
+      </div>
+      <br/>
+      <br/>
+      <div style="">
+          <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a href="/recipes">RECIPES</a>
+                  </button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/bars">BARS</a></button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/deals">DEALS</a></button>
+              </div>
+          </div>
+      </div>
+
+      <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" style="display: none;">
+          <div class="modal-dialog">
+              <div class="loginmodal-container">
+                  <h3>Register for a new Account</h3><br>
+                  <form action='/newuser' method='get'>
+                      <input type="text" name="user" placeholder="Username" required>
+                      <input type="email" name="email" placeholder="Email Address" required>
+                      <input type="password" name="pass" placeholder="Password" required>
+                      <input type="submit" name="signup" class="login loginmodal-submit" value="SUBMIT">
+                  </form>
+              </div>
+          </div>
+      </div>
+
+      <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" style="display: none;">
+          <div class="modal-dialog">
+              <div class="loginmodal-container">
+                  <h3>Login to Your Account</h3><br>
+                  <form action='/user' method='get'>
+                      <input type="text" name="log_user" placeholder="Username" required>
+                      <input type="password" name="log_pass" placeholder="Password" required>
+                      <input type="submit" name="login" class="login loginmodal-submit" value="LOGIN">
+                  </form>
+              </div>
+          </div>
+      </div>
+
+    <div class="menus style3" id="products">
+        <div class="container">
+            <div class="row">
+
+                <!-- Section Header End -->
+
+                <div class="menus-container">
+                    <!-- menu -->
+                    <div class="menu row">
+                        <div class="col-md-6 wow fadeInRight animated"
+                             style="visibility: visible; animation-name: fadeInRight;">
+                            <div class="">
+
+                                <div class="food">
+                                    <div class="food-desc">
+                                        <a class="food-name" href={{urlOne}}>{{one}}</a></br>
+                                        <div class=""><img src="/images/{{category}}/{{category}}1.png" width="90" height="240"
+                                                           ALIGN=”right”></div>
+                                    </div>
+                                    <div class="food-desc">
+                                    </div>
+                                    <div class="food-desc">
+                                        <h2 class="food-name" style="text-decoration: none;">&nbsp</h2>
+                                    </div>
+                                    <div class="food-desc">
+                                        <h2 class="food-name" style="text-decoration: none;">£8.99 per bottle</h2>
+                                        <form action='/{{category}}/{{individual}}/cart' method='get'>
+                                                <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
+                                                <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="food">
+                                    <div class="food-desc">
+                                        <a class="food-name" href={{urlTwo}}>{{two}}</a></br>
+                                        <div class=""><img src="/images/{{category}}/{{category}}2.png" width="90" height="240"
+                                                           ALIGN=”right”></div>
+                                    </div>
+                                    <div class="food-desc">
+                                    </div>
+                                    <div class="food-desc">
+                                        <h2 class="food-name" style="text-decoration: none;">&nbsp</h2>
+                                    </div>
+                                    <div class="food-desc">
+                                        <h2 class="food-name" style="text-decoration: none;">£8.99 per bottle</h2>
+                                        <form action='/{{category}}/{{individual}}/cart' method='get'>
+                                                <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
+                                                <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="food">
+                                    <div class="food-desc">
+                                        <a class="food-name" href={{urlThree}}>{{three}}</a></br>
+                                        <div class=""><img src="/images/{{category}}/{{category}}3.png" width="90" height="240"
+                                                           ALIGN=”right”></div>
+                                    </div>
+                                    <div class="food-desc">
+                                    </div>
+                                    <div class="food-desc">
+                                        <h2 class="food-name" style="text-decoration: none;">&nbsp</h2>
+                                    </div>
+                                    <div class="food-desc">
+                                        <h2 class="food-name" style="text-decoration: none;">£8.99 per bottle</h2>
+                                        <form action='/{{category}}/{{individual}}/cart' method='get'>
+                                                <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
+                                                <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="food">
+                                    <div class="food-desc">
+                                        <a class="food-name" href={{urlFour}}>{{four}}</a></br>
+                                        <div class=""><img src="/images/{{category}}/{{category}}4.png" width="90" height="240"
+                                                           ALIGN=”right”></div>
+                                    </div>
+                                    <div class="food-desc">
+                                    </div>
+                                    <div class="food-desc">
+                                        <h2 class="food-name" style="text-decoration: none;">&nbsp</h2>
+                                    </div>
+                                    <div class="food-desc">
+                                        <h2 class="food-name" style="text-decoration: none;">£8.99 per bottle</h2>
+                                        <form action='/{{category}}/{{individual}}/cart' method='get'>
+                                                <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
+                                                <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div><!-- /menu-column -->
+                        </div><!-- /col-md-6 -->
+                        <div class="col-md-6 wow fadeInLeft animated"
+                             style="visibility: visible; animation-name: fadeInLeft;">
+                            <div class="">
+
+                              <div class="food">
+                                  <div class="food-desc">
+                                      <a class="food-name" href={{urlOne}}>{{one}}</a></br>
+                                      <div class=""><img src="/images/{{category}}/{{category}}1.png" width="90" height="240"
+                                                         ALIGN=”right”></div>
+                                  </div>
+                                  <div class="food-desc">
+                                  </div>
+                                  <div class="food-desc">
+                                      <h2 class="food-name" style="text-decoration: none;">&nbsp</h2>
+                                  </div>
+                                  <div class="food-desc">
+                                      <h2 class="food-name" style="text-decoration: none;">£8.99 per bottle</h2>
+                                      <form action='/{{category}}/{{individual}}/cart' method='get'>
+                                              <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
+                                              <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
+                                      </form>
+                                  </div>
+                              </div>
+
+                              <div class="food">
+                                  <div class="food-desc">
+                                      <a class="food-name" href={{urlTwo}}>{{two}}</a></br>
+                                      <div class=""><img src="/images/{{category}}/{{category}}2.png" width="90" height="240"
+                                                         ALIGN=”right”></div>
+                                  </div>
+                                  <div class="food-desc">
+                                  </div>
+                                  <div class="food-desc">
+                                      <h2 class="food-name" style="text-decoration: none;">&nbsp</h2>
+                                  </div>
+                                  <div class="food-desc">
+                                      <h2 class="food-name" style="text-decoration: none;">£8.99 per bottle</h2>
+                                      <form action='/{{category}}/{{individual}}/cart' method='get'>
+                                              <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
+                                              <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
+                                      </form>
+                                  </div>
+                              </div>
+
+                              <div class="food">
+                                  <div class="food-desc">
+                                      <a class="food-name" href={{urlThree}}>{{three}}</a></br>
+                                      <div class=""><img src="/images/{{category}}/{{category}}3.png" width="90" height="240"
+                                                         ALIGN=”right”></div>
+                                  </div>
+                                  <div class="food-desc">
+                                  </div>
+                                  <div class="food-desc">
+                                      <h2 class="food-name" style="text-decoration: none;">&nbsp</h2>
+                                  </div>
+                                  <div class="food-desc">
+                                      <h2 class="food-name" style="text-decoration: none;">£8.99 per bottle</h2>
+                                      <form action='/{{category}}/{{individual}}/cart' method='get'>
+                                              <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
+                                              <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
+                                      </form>
+                                  </div>
+                              </div>
+
+                              <div class="food">
+                                  <div class="food-desc">
+                                      <a class="food-name" href={{urlFour}}>{{four}}</a></br>
+                                      <div class=""><img src="/images/{{category}}/{{category}}4.png" width="90" height="240"
+                                                         ALIGN=”right”></div>
+                                  </div>
+                                  <div class="food-desc">
+                                  </div>
+                                  <div class="food-desc">
+                                      <h2 class="food-name" style="text-decoration: none;">&nbsp</h2>
+                                  </div>
+                                  <div class="food-desc">
+                                      <h2 class="food-name" style="text-decoration: none;">£8.99 per bottle</h2>
+                                      <form action='/{{category}}/{{individual}}/cart' method='get'>
+                                              <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
+                                              <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
+                                      </form>
+                                  </div>
+                              </div>
+
+                            </div><!-- /menu-column -->
+                        </div><!-- /col-md-6 -->
+                    </div><!-- /row -->
+                </div><!-- /menu-carousel -->
+            </div><!-- /menus-container -->
+        </div><!-- /container -->
+    </div>
+</div>
+
 </body>
+
+
 </html>

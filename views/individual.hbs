@@ -1,24 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- CSS Section -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/color.css">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/css/magnific-popup.css">
+  <link rel="stylesheet" href="/css/slider-pro.css">
+  <link rel="stylesheet" href="/css/owl.carousel.css">
+  <link rel="stylesheet" href="/css/owl.theme.css">
+  <link rel="stylesheet" href="/css/owl.transitions.css">
+  <link rel="stylesheet" href="/css/animate.css">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="favicons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <script src="js/username.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style type="text/css">li {
+        list-style-type: none;
+    }</style>
     <meta charset="UTF-8">
     <title>{{category}}, {{individual}}</title>
 </head>
-<body>
-<h1>{{individual}}</h1>
-<div>
-    <img class="sp-image" src="{{image}}">
-    <p>{{introduction}}</p>
-</div>
-<div id="1">
-    <form action='/{{category}}/{{individual}}/cart' method='get'>
-        <input type="number" name="num" required>
-        <input type="submit" name="placeOrder" value="Place Order" required>
-    </form>
-</div>
+
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" onload="fetchData()">
+
+
+  <!-- Header Start -->
+
+  <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand nav navbar-nav" href="#myPage"></a>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+              <a href="../"><img class="logo" id="logo" src="/images/logo.png" alt="logo" width="42" height="42"></a>
+              <ul class="nav navbar-nav navbar-right">
+                  <li><a id=88 href="" data-toggle="" data-target="">NULL</a></li>
+                  <li><a href="/user/order/orderForUser" data-toggle="" data-target="">CART</a></li>
+                  <li><a href="" data-toggle="modal" data-target="#signup-modal">SIGN UP</a></li>
+                  <li><a href="" data-toggle="modal" data-target="#login-modal">LOG IN</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+
+  <div class="jumbotron text-center">
+      <div style="height:20%;">
+          <h1></h1>
+      </div>
+      <div style="height:10%;">
+          <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/wine">WINE</a></button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                    href="/sprites">SPIRITES</a>
+                  </button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/beer">BEER</a></button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/other">OTHER</a></button>
+              </div>
+          </div>
+      </div>
+      <br/>
+      <br/>
+      <div style="height:30%;">
+          <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a href="/recipes">RECIPES</a>
+                  </button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/bars">BARS</a></button>
+              </div>
+              <div class="col-sm-2">
+                  <button data-toggle="modal" data-target="" type="button" class="btn btn-default"><a
+                          href="/deals">DEALS</a></button>
+              </div>
+          </div>
+      </div>
+
+      <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" style="display: none;">
+          <div class="modal-dialog">
+              <div class="loginmodal-container">
+                  <h3>Register for a new Account</h3><br>
+                  <form action='/newuser' method='get'>
+                      <input type="text" name="user" placeholder="Username" required>
+                      <input type="email" name="email" placeholder="Email Address" required>
+                      <input type="password" name="pass" placeholder="Password" required>
+                      <input type="submit" name="signup" class="login loginmodal-submit" value="SUBMIT">
+                  </form>
+              </div>
+          </div>
+      </div>
+
+      <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" style="display: none;">
+          <div class="modal-dialog">
+              <div class="loginmodal-container">
+                  <h3>Login to Your Account</h3><br>
+                  <form action='/user' method='get'>
+                      <input type="text" name="log_user" placeholder="Username" required>
+                      <input type="password" name="log_pass" placeholder="Password" required>
+                      <input type="submit" name="login" class="login loginmodal-submit" value="LOGIN">
+                  </form>
+              </div>
+          </div>
+      </div>
+
+
+      <section>
+        <div class="menus style2">
+          <div class="container">
+              <div class="row">
+                  <!-- Section Header -->
+                  <div class="col-md-12 col-sm-12 col-xs-12 section-header wow fadeInDown">
+                      <p class="col-md-8 col-sm-10 col-xs-12 col-md-offset-2 col-sm-offset-1"></p>
+                  </div>
+                  <!-- Section Header End -->
+
+                  <div class="col-md-6 col-sm-6 col-xs-12 custom-sec-img wow fadeInDown">
+                      <img class="sp-image" src="{{image}}">
+                  </div>
+
+
+
+                  <div class="col-md-6 col-sm-6 col-xs-12 customized-text wow fadeInDown black-ed" style="text-align: left;">
+                    <p><span>PRODUCT NAME:{{individual}}</span></h>
+  				<p>DESCRIPTIONS:La Leyenda nace en el 2003 a partir de un sueño compartido convertido en una empresa familiar habilitada donde sus miembros fueron capacitándose para crear un producto de alta calidad, un producto que fuera originario de La Costa, atractivo para nuestra gente y fundamentalmente nuestros turistas.</p>
+                      <div class="row">
+                          <div class="col-md-11">
+                            <p>PRICE:£8.99 per bottle</p></br>
+                            <form action='/{{category}}/{{individual}}/cart' method='get'>
+                            <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
+                            <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
+                            </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </section>
+
 <a href={{parent_page}}>Back to {{category}} page</a><br/>
 <a href="../">Back to main page</a>
+
 </body>
+
+<!-- JavaScript Section -->
 <script>
     var cnt = 0;
 
@@ -35,4 +184,5 @@
         }
     }
 </script>
+
 </html>

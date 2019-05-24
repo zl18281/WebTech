@@ -263,19 +263,19 @@ app.get('/:category/:individual', (req, res) => {
         case 'one': {
             number = "one";
             index = 1;
-            imageSrc = "/images/" + category +"/1.png";
+            imageSrc = "/images/" + category + "/" + category + "1.png";
             break;
         }
         case 'two': {
             number = "two";
             index = 2;
-            imageSrc = "/images/" + category +"/2.png";
+            imageSrc = "/images/" + category + "/" + category + "2.png";
             break;
         }
         case 'three': {
             number = "three";
             index = 3;
-            imageSrc = "/images/" + category +"/3.png";
+            imageSrc = "/images/" + category + "/" + category + "3.png";
             break;
         }
     }
