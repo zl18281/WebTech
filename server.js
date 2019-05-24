@@ -63,7 +63,7 @@ var createWineTableSql = "CREATE TABLE IF NOT EXISTS " +
     "name VARCHAR(50) UNIQUE NOT NULL, " +
     "intro TEXT, " +
     "category INTEGER, " +
-    "src VARCHAR(100), " +
+    "price INTEGER, " +
     "FOREIGN KEY(category) REFERENCES category(ids)" +
     ");";
 sqliteDB.createTable(createWineTableSql);
@@ -96,14 +96,21 @@ var insertCategorySql = "INSERT INTO category(ids, name) VALUES(?, ?);";
 sqliteDB.insertData(insertCategorySql, categoryData);
 
 //some initial data for wine table(最后要删)
-var wineData = [[1, 'Red Wine', 'From Australia', 1, '/images/wine/1'],
-    [2, 'Grain Wine', 'Fermented from pure corn', 1, '/images/wine/2'],
-    [3, 'Red Sprite', 'With no sugar', 2, '/images/spirit/1'],
-    [4, 'Blue Sprite', 'With sugar', 2, '/images/spirit/2'],
-    [5, 'Black beer', 'From America', 3, '/images/beer/1'],
-    [6, 'Light beer', 'With less sugar', 3, '/image/beer/2'],
-    [7, 'Strong beer', 'With strong spicy flavor', 3, '/images/beer/3']];
-var insertWineSql = "INSERT INTO wine(ids, name, intro, category, src) VALUES(?, ?, ?, ?, ?);";
+var wineData = [[1, 'Porta 6 2017 Lisboa', 'Chock-full of warm, jammy forest-fruit flavours, it is our best-ever-selling red for good reason.', 1, 8.99],
+    [2, 'The Guvnor', 'A heady, limitless red pumping with blackcurrant, plum and vanilla flavours.', 1, 8.99],
+    [3, 'Definition Rioja Reserva 2013', 'What makes the perfect Rioja? Is it toasty cherry flavours? Vanilla spice? Or the ability to match beautifully with lamb? The Definition Rioja does all three!', 1, 13.99],
+    [4, 'S&R Douro Red, 2016', 'It is deep-ruby red, emitting countless vanilla-licked notes of red and black fruits. It is everything that makes Portuguese blends great.', 1, 11.99],
+    [5, 'Vieux Remparts 2016 Lussac St-Emilion', 'Flavours of ripe blackberry, plum and sandlewood drift through this full-bodied red. All of this at this low price is a steal.', 1, 12.99],
+    [6, 'Château Recougne 2016 Bordeaux Supérieur', 'Discover a Bordeaux bargain in this red delectable bramble notes, regal spices and integrated tannins.', 1, 11.99],
+    [7, 'Passimento 2016 Pasqua', 'It is one of our best-rated Italian reds and a heady red, full of concentrated black fruits and sweet spices. A baby Amarone at the snip of it is big brothers asking price.', 1, 11.99],
+    [8, 'Kangarilla Road Shiraz 2018 McLaren Vale', 'Packed with black fruits, dark chocolate and a creamy texture, this is why the Kangarilla Road winery was given the top Five Red Star rating by leading Aussie wine critic James Halliday.', 1, 13.99],
+
+    [9, 'Red Sprite', 'With no sugar', 2, '/images/spirit/1'],
+    [10, 'Blue Sprite', 'With sugar', 2, '/images/spirit/2'],
+    [11, 'Black beer', 'From America', 3, '/images/beer/1'],
+    [12, 'Light beer', 'With less sugar', 3, '/image/beer/2'],
+    [13, 'Strong beer', 'With strong spicy flavor', 3, '/images/beer/3']];
+var insertWineSql = "INSERT INTO wine(ids, name, intro, category, price) VALUES(?, ?, ?, ?, ?);";
 sqliteDB.insertData(insertWineSql, wineData);
 
 
@@ -169,11 +176,31 @@ app.get('/:category', (req, res) => {
     if (req.params.category == "wine") {
         category = "wine";
         res.render('category.hbs', {
-            category: 'wine',
-            one: 'Red Wine',
-            two: 'Grain Wine',
+            category:'wine',
+            one:'Porta 6 2017 Lisboa',
+            two:'The Guvnor',
+            three:'Definition 2013',
+            four:'S&R Douro Red, 2016',
+            five:'Vieux Remparts 2016',
+            six:'Château Recougne 2016',
+            seven:'Passimento 2016 Pasqua',
+            eight:'Kangarilla Road Shiraz 2018',
+            priceOne:'8.99',
+            priceTwo:'8.99',
+            priceThree:'13.99',
+            priceFour:'11.99',
+            priceFive:'12.99',
+            priceSix:'11.99',
+            priceSeven:'11.99',
+            priceEight:'13.99',
             urlOne: "/wine/one",
             urlTwo: "/wine/two",
+            urlThree:"/wine/three",
+            urlFour:"/wine/four",
+            urlFive:"/wine/five",
+            urlSix:"/wine/six",
+            urlSeven:"/wine/seven",
+            urlEight:"/wine/eight",
         });
     } else if (req.params.category == "spirit") {
         category = "spirit";
@@ -278,6 +305,36 @@ app.get('/:category/:individual', (req, res) => {
             imageSrc = "/images/" + category + "/" + category + "3.png";
             break;
         }
+        case 'four': {
+            number = "four";
+            index = 4;
+            imageSrc = "/images/" + category + "/" + category + "4.png";
+            break;
+        }
+        case 'five': {
+            number = "five";
+            index = 5;
+            imageSrc = "/images/" + category + "/" + category + "5.png";
+            break;
+        }
+        case 'six': {
+            number = "six";
+            index = 6;
+            imageSrc = "/images/" + category + "/" + category + "6.png";
+            break;
+        }
+        case 'seven': {
+            number = "seven";
+            index = 7;
+            imageSrc = "/images/" + category + "/" + category + "7.png";
+            break;
+        }
+        case 'eight': {
+            number = "eight";
+            index = 8;
+            imageSrc = "/images/" + category + "/" + category + "8.png";
+            break;
+        }
     }
     if (category == "wine" || category == "spirit" || category == "beer") {
         sqliteDB.queryData(findWineSql, (rows) => {
@@ -289,7 +346,8 @@ app.get('/:category/:individual', (req, res) => {
                     introduction: rows[index - 1].intro,
                     category: req.params['category'],
                     parent_page: "/" + req.params['category'],
-                    image: imageSrc
+                    image: imageSrc,
+                    price: rows[index - 1].price
                 });
             }
         });

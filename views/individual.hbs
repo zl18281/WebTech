@@ -146,10 +146,10 @@
 
                   <div class="col-md-6 col-sm-6 col-xs-12 customized-text wow fadeInDown black-ed" style="text-align: left;">
                     <p><span>PRODUCT NAME:{{individual}}</span></h>
-  				<p>DESCRIPTIONS:La Leyenda nace en el 2003 a partir de un sueño compartido convertido en una empresa familiar habilitada donde sus miembros fueron capacitándose para crear un producto de alta calidad, un producto que fuera originario de La Costa, atractivo para nuestra gente y fundamentalmente nuestros turistas.</p>
+  				<p>DESCRIPTIONS:{{introduction}}</p>
                       <div class="row">
                           <div class="col-md-11">
-                            <p>PRICE:£8.99 per bottle</p></br>
+                            <p>PRICE:{{price}} per bottle</p></br>
                             <form action='/{{category}}/{{individual}}/cart' method='get'>
                             <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
                             <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
