@@ -147,7 +147,7 @@
   				<p>DESCRIPTIONS:{{introduction}}</p>
                       <div class="row">
                           <div class="col-md-11">
-                            <p>PRICE:{{price}} per bottle</p></br>
+                            <p>PRICE:£{{price}}</p></br>
                             <form action='/{{category}}/{{individual}}/cart' method='get'>
                             <input type="number" name="num" style=" color:#28292e; font-size:15px;" required>
                             <input type="submit" name="placeOrder" value="Place Order" style="color:#28292e; font-family: 'Raleway',cursive; font-size:15px;" required>
@@ -159,10 +159,6 @@
           </div>
         </div>
       </section>
-
-<a href={{parent_page}}>Back to {{category}} page</a><br/>
-<a href="../">Back to main page</a>
-
 </body>
 
 <!-- JavaScript Section -->
