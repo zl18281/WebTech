@@ -13,55 +13,91 @@
             border-bottom-width: 1px;
             border-bottom-style: solid;
             border-bottom-color: rgb(230, 189, 189);
+            text-align: center;
+            font-family: 'Arial', sans-serif;
         }
         td, th {
             padding: 5px 10px;
             font-size: 20px;
             font-family: Verdana;
-            color: rgb(177, 106, 104);
+            color: white;
         }
         table tr:nth-child(even) {
-            background: rgb(238, 211, 210)
+            background: rgb(51, 204, 51);
         }
         table tr:nth-child(odd) {
-            background: #FFF
+            background: rgb(102, 153, 0);
         }
         th {
-
+            font-weight: bold;
+            background: darkgreen;
+        }
+        a {
+            text-decoration: none;
+            font-family: 'Arial', sans-serif;
+            color: rgb(255, 255, 255);
+        }
+        button {
+            color: rgb(255, 255, 255);
+            background-color: darkgreen;
+            text-align: center;
+            font-weight: bolder;
         }
 
     </style>
 </head>
 <body>
-<h1>Order For user {{username}}</h1>
-<p id="1">{{order}}</p>
-<table id="2" width="400" cellpadding="10" cellspacing="5"></table>
-<a href="/">Back to main page</a>
+<div style="Text-align:center;width:100%;">
+    <h1 style="background-color: darkgreen; color: white">Order For user {{username}}</h1>
+    <p id="1">{{order}}</p>
+    <table id="2" width="400" cellpadding="10" cellspacing="5" align="center"></table>
+    <button id="button"><a href="/">Back to main page</a></button>
+</div>
 </body>
 <script>
     var string = document.getElementById("1").innerText;
     var arrayOfStrings = string.split(",");
-    for (var i = 0; i < arrayOfStrings.length; i = i + 2) {
-        if (i == 0 || i == 1) {
+    var total = 0;
+    for (var i = 0; i < arrayOfStrings.length; i = i + 3) {
+        if (i == 0 || i == 1 || i == 2) {
             var tr = document.createElement("tr");
             var thOne = document.createElement("th");
             var thTwo = document.createElement("th");
+            var thThree = document.createElement("th");
             thOne.innerHTML = arrayOfStrings[i];
             thTwo.innerHTML = arrayOfStrings[i + 1];
+            thThree.innerHTML = arrayOfStrings[i + 2];
             tr.appendChild(thOne);
             tr.appendChild(thTwo);
+            tr.appendChild(thThree);
             document.getElementById("2").appendChild(tr);
         } else {
             var tr = document.createElement("tr");
             var tdOne = document.createElement("td");
             var tdTwo = document.createElement("td");
+            var tdThree = document.createElement("td");
             tdOne.innerHTML = arrayOfStrings[i];
             tdTwo.innerHTML = arrayOfStrings[i + 1];
+            tdThree.innerHTML = arrayOfStrings[i + 2];
             tr.appendChild(tdOne);
             tr.appendChild(tdTwo);
+            tr.appendChild(tdThree);
             document.getElementById("2").appendChild(tr);
+            total += (arrayOfStrings[i + 2] - 0.1 + 0.1);
         }
     }
+    var tr = document.createElement("tr");
+    var tdOne = document.createElement("td");
+    tdOne.innerHTML = "";
+    tr.appendChild(tdOne);
+    var tdTwo = document.createElement("td");
+    tdTwo.innerHTML = "Total";
+    tr.appendChild(tdTwo);
+    var tdThree = document.createElement("td");
+    tdThree.innerHTML = total;
+    tr.appendChild(tdThree);
+    document.getElementById("2").appendChild(tr);
+
     document.getElementById("1").remove();
 </script>
 </html>

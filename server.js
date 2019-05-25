@@ -477,10 +477,10 @@ app.get('/user/order/orderForUser', (req, res) => {
     console.log("hahaha");
     console.log(userId);
     var queryOrder =
-        "SELECT w.name as wineName, COUNT(*) AS wineNum FROM orderList as ol INNER JOIN wine as w ON ol.wine = w.ids WHERE customer = " +
+        "SELECT w.name as wineName, COUNT(*) AS wineNum, (w.price * COUNT(*)) as total FROM orderList as ol INNER JOIN wine as w ON ol.wine = w.ids WHERE customer = " +
         userId + " GROUP BY ol.wine;";
     sqliteDB.queryData(queryOrder, (rows) => {
-        var orderList = [["Item", "Number"]];
+        var orderList = [["Item", "Number", "Total Price"]];
         if ((rows[0] == undefined)) {
             res.render('order.hbs', {
                 username: userLoggedIn,
@@ -488,7 +488,7 @@ app.get('/user/order/orderForUser', (req, res) => {
             });
         } else {
             for (var i = 0; i < rows.length; i++) {
-                orderList[i + 1] = [rows[i].wineName, rows[i].wineNum];
+                orderList[i + 1] = [rows[i].wineName, rows[i].wineNum, rows[i].total];
             }
             console.log(orderList);
             res.render('order.hbs', {
