@@ -44,9 +44,11 @@
             font-weight: bolder;
         }
 
+
     </style>
 </head>
-<body>
+<body style="height:800px;" onload="myFloat();">
+<img id="myImg" src="/images/cart.png" width="200px" height="200px" style="position: absolute; left: 500px; top: 400px; border: solid 1px black;" />
 <div style="Text-align:center;width:100%;">
     <h1 style="background-color: darkgreen; color: white">Order For user {{username}}</h1>
     <p id="1">{{order}}</p>
@@ -99,5 +101,42 @@
     document.getElementById("2").appendChild(tr);
 
     document.getElementById("1").remove();
+</script>
+<script type="text/javascript">
+    var step = 1;
+    var y = -1;
+    var x = 1;
+    function myFloat()
+    {
+        var img = document.getElementById("myImg");
+
+        var top = img.style.top.replace("px", "");
+
+        var left = img.style.left.replace("px", "");
+
+        if(top <= 0)
+        {
+            y = 1;
+        }
+        if(top >= document.body.clientHeight)
+        {
+            y = -1;
+        }
+        top = (top*1) + (step * y);
+        img.style.top = top + "px";
+
+        if(left <= 0)
+        {
+            x = 1;
+        }
+
+        if(left >= (document.body.clientWidth - img.clientWidth))
+        {
+            x = -1;
+        }
+        left = (left*1) + (step * x);
+        img.style.left = left + "px";
+        setTimeout("myFloat()", 20);
+    }
 </script>
 </html>
