@@ -312,31 +312,13 @@ app.get('/:category', (req, res) => {
         });
     } else if (req.params.category == "recipes") {
         category = "recipes";
-        res.render('category.hbs', {
-            category: 'recipes',
-            one: 'Fermentation',
-            two: 'Mixing',
-            urlOne: "/recipes/one",
-            urlTwo: "/recipes/two"
-        });
+        res.sendFile(__dirname + "/site/recipes.html");
     } else if (req.params.category == "bars") {
         category = "bars";
-        res.render('category.hbs', {
-            category: 'bars',
-            one: 'bar one',
-            two: 'bar two',
-            urlOne: "/bars/one",
-            urlTwo: "/bars/two"
-        });
+        res.sendFile(__dirname + "/site/bars.html");
     } else if (req.params.category == "deals") {
         category = "deals";
-        res.render('category.hbs', {
-            category: 'deals',
-            one: 'deal one',
-            two: 'deal two',
-            urlOne: "/deals/one",
-            urlTwo: "/deals/two"
-        });
+        res.sendFile(__dirname + "/site/discount.html");
     }
 });
 
